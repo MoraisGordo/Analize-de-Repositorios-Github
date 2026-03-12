@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 import time
 
-TOKEN = "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"
+TOKEN = "TOKEN"
 
 headers = {
     "Authorization": f"Bearer {TOKEN}",
