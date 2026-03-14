@@ -12,6 +12,7 @@ df["idade_anos"] = (df["idade_dias"] / 365).round(2)
 
 df["dias_desde_update"] = (hoje - df["updated_at"]).dt.total_seconds() / 86400
 df["dias_desde_update"] = df["dias_desde_update"].round(2)
+df["taxa_issues_fechadas"] = df["closed_issues"] / df["total_issues"].replace(0, 1)
 
 print("\nRESULTADOS DAS RQs\n")
 print("RQ01 mediana idade (anos):", df["idade_anos"].median())
@@ -27,4 +28,7 @@ print(linguagens.head(10))
 
 df.to_csv("repositorios_com_metricas.csv", sep=";", index=False)
 linguagens.to_csv("linguagens_populares.csv", sep=";", index=False)
+
+print("Porcentagem issues fechadas:", (df["merged_pr"].sum() / (df["merged_pr"].sum() + df["releases"].sum()) * 100).round(2), "%")
+
 print("\nArquivos gerados com sucesso!")

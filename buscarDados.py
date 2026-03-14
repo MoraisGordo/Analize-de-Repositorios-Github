@@ -2,13 +2,11 @@ import requests
 import pandas as pd
 import time
 
-TOKEN = "TOKEN"
-
-headers = {
-    "Authorization": f"Bearer {TOKEN}",
-    "Content-Type": "application/json",
-    "User-Agent": "python-script"
-}   
+# headers = {
+#     "Authorization": f"Bearer {TOKEN}",
+#     "Content-Type": "application/json",
+#     "User-Agent": "python-script"
+# }   
 
 query = """
 query ($cursor: String) {
@@ -30,6 +28,12 @@ query ($cursor: String) {
           totalCount
         }
         pullRequests(states: MERGED) {
+          totalCount
+        }
+        issues {
+          totalCount
+        }
+        closedIssues: issues(states: CLOSED) {
           totalCount
         }
       }
@@ -79,6 +83,8 @@ while len(repos) < 1000:
             "language": repo["primaryLanguage"]["name"] if repo["primaryLanguage"] else None,
             "releases": repo["releases"]["totalCount"],
             "merged_pr": repo["pullRequests"]["totalCount"],
+            "total_issues": repo["issues"]["totalCount"],
+            "closed_issues": repo["closedIssues"]["totalCount"],
         })
 
         if len(repos) >= 1000:
